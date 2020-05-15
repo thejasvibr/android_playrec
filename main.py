@@ -23,6 +23,9 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.logger import Logger
 from jnius import autoclass
 from time import sleep, time
+import os 
+
+app_name = "playrec"
 
 # get the needed Java classes
 MediaRecorder = autoclass('android.media.MediaRecorder')
@@ -32,6 +35,9 @@ AudioEncoder = autoclass('android.media.MediaRecorder$AudioEncoder')
 Environment = autoclass('android.os.Environment')
 
 path = Environment.getExternalStorageDirectory().getAbsolutePath()
+
+app_folder = os.path.join(path, app_name)
+
 Logger.info('App: storage path == "%s"' % path)
 
 Logger.info('Made it till preparing the mrecorder!')
@@ -62,8 +68,13 @@ class Miaow(BoxLayout):
         # the timestamp:
         timestamp = str(int(time()))
         file_w_timestamp = '/'+timestamp+'_time' +'.3gp'
-        storage_path = (Environment.getExternalStorageDirectory()
-                .getAbsolutePath() + file_w_timestamp)
+        
+        if os.path.isdir(app_folder):
+            pass
+        else:
+            os.mkdir(app_folder)
+        
+        storage_path = (app_folder + file_w_timestamp)
         Logger.info(f'The target file is {file_w_timestamp}')
         mRecorder.setOutputFile(storage_path)
         mRecorder.setAudioEncoder(AudioEncoder.AAC)
