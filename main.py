@@ -44,26 +44,53 @@ Logger.info('Made it till preparing the mrecorder!')
 
 mRecorder = MediaRecorder()
 
+## Set up the media player
+MediaPlayer = autoclass('android.media.MediaPlayer')
+player = MediaPlayer()
+
 class Miaow(BoxLayout):
     
     def __init__(self, **kwargs):
         super(Miaow, self).__init__(**kwargs)
-        self.cols = 1
+        self.cols = 2
         self.rec_button = Button(text='5 seconds rec',
                                  on_press=self.begin_rec,
                                  background_color=(1, 1, 1, .85))
         self.add_widget(self.rec_button)
         
-    def clearitup(self, instance):
-        self.draw_region.canvas.clear()
-
+        self.play_button = Button(text='5 seconds playrec',
+                                 on_press=self.init_playrec,
+                                 background_color=(1, 0, 0, .85))
+        self.add_widget(self.play_button)
+    
+    def init_playrec(self, instance):
+        self.init_recording()
+        mRecorder.start()
+        self.init_play()
+        player.start()
+        sleep(0.5)
+        mRecorder.stop()
+        
+    
+    def init_play(self):
+        player.reset()
+        Logger.info('initialising playback!')
+        player.setDataSource('pbk_chirp.wav')
+        player.prepare()
+        
+    def begin_play(self, instance):
+        self.init_play()
+        Logger.info('beginning playback!')
+        player.start()
+        
+        
 
     def init_recording(self):
         # create out recorder
         self.rec_button.background_color = (1, .3, .4, .85)
         self.rec_button.text = 'Recording....'
         sleep(0.5)
-        mRecorder.setAudioSource(AudioSource.DEFAULT)
+        mRecorder.setAudioSource(AudioSource.UNPROCESSED)
         mRecorder.setOutputFormat(OutputFormat.THREE_GPP)
         # the timestamp:
         timestamp = str(int(time()))

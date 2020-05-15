@@ -1,10 +1,10 @@
 [app]
 
 # (str) Title of your application
-title = 5secrecord
+title = playrec
 
 # (str) Package name
-package.name = shortrecord
+package.name = playrec
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = com.beleyurapps
@@ -13,7 +13,7 @@ package.domain = com.beleyurapps
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas
+source.include_exts = py,png,jpg,kv,atlas,wav
 
 # (list) List of inclusions using pattern matching
 #source.include_patterns = assets/*,images/*.png
